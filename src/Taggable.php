@@ -267,7 +267,12 @@ trait Taggable
 		$tagSlug = call_user_func($normalizer, $tagName);
 		
 		$previousCount = $this->tagged()->where('tag_slug', '=', $tagSlug)->take(1)->count();
-		if($previousCount >= 1) { return; }
+		if($previousCount >= 1) {
+            $tagged =  $this->tagged()->where('tag_slug', '=', $tagSlug)->first();
+            $tagged->increment('count');
+            $tagged->saveOrFailed();
+            return;
+		}
 		
 		$displayer = config('tagging.displayer');
 		$displayer = empty($displayer) ? '\Illuminate\Support\Str::title' : $displayer;
@@ -298,13 +303,20 @@ trait Taggable
 		$normalizer = $normalizer ?: [static::$taggingUtility, 'slug'];
 		
 		$tagSlug = call_user_func($normalizer, $tagName);
-		
-		if($count = $this->tagged()->where('tag_slug', '=', $tagSlug)->delete()) {
-			static::$taggingUtility->decrementCount($tagName, $tagSlug, $count);
-		}
-		
-		unset($this->relations['tagged']);
-		event(new TagRemoved($this));
+
+        $tagged =  $this->tagged()->where('tag_slug', '=', $tagSlug)->first();
+        if ($tagged != null){
+            if ($tagged->count > 1){
+                $tagged->decrement('count');
+                $tagged->saveOrFail();
+            }
+            else{
+                $tagged->delete();
+            }
+            static::$taggingUtility->decrementCount($tagName, $tagSlug, 1);
+
+            event(new TagRemoved($this));
+        }
 	}
 
 	/**

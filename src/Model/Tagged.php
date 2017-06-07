@@ -10,8 +10,11 @@ class Tagged extends Eloquent
 {
 	protected $table = 'tagging_tagged';
 	public $timestamps = false;
-	protected $fillable = ['tag_name', 'tag_slug'];
+	protected $fillable = ['tag_name', 'tag_slug', 'count', 'status'];
 	protected $taggingUtility;
+
+    const STATUS_ENABLED = 1;
+    const STATUS_DISABLED = 0;
 
 	public function __construct(array $attributes = array())
 	{

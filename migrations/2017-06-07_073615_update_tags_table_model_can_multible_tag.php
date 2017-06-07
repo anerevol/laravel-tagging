@@ -16,6 +16,8 @@ class UpdateTagsTable extends Migration {
 
         Schema::table('tagging_tags', function ($table) {
             $table->integer('count')->unsigned()->default(1);
+            $table->integer('status')->default(1);
+
         });
 
         Schema::table('tagging_tag_groups', function ($table) {
@@ -29,6 +31,8 @@ class UpdateTagsTable extends Migration {
     {
         Schema::table('tagging_tags', function ($table) {
             $table->dropColumn('count');
+            $table->dropColumn('status');
+
         });
 
         Schema::table('tagging_tag_groups', function ($table) {

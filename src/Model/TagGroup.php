@@ -11,7 +11,7 @@ class TagGroup extends Eloquent
     protected $table = 'tagging_tag_groups';
     public $timestamps = false;
     protected $softDelete = false;
-    public $fillable = ['name'];
+    public $fillable = ['name', 'display_format'];
     protected $taggingUtility;
 
     /**
