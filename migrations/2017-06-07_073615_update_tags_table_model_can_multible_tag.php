@@ -9,7 +9,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class UpdateTagsTable extends Migration {
+class TableModelCanMultibleTag extends Migration {
 
     public function up()
     {
