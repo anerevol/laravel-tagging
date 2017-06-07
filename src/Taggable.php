@@ -270,7 +270,7 @@ trait Taggable
 		if($previousCount >= 1) {
             $tagged =  $this->tagged()->where('tag_slug', '=', $tagSlug)->first();
             $tagged->increment('count');
-            $tagged->saveOrFailed();
+            $tagged->saveOrFail();
             return;
 		}
 		
