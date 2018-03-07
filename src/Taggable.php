@@ -93,8 +93,10 @@ trait Taggable
 	 */
 	public function tag($tagNames)
 	{
-		$tagNames = static::$taggingUtility->makeTagArray($tagNames);
-		
+//		$tagNames = static::$taggingUtility->makeTagArray($tagNames);
+        if (is_string($tagNames)) {
+            $tagNames = [$tagNames];
+        }
 		foreach($tagNames as $tagName) {
 			$this->addTag($tagName);
 		}
@@ -259,13 +261,13 @@ trait Taggable
 	 */
 	private function addTag($tagName)
 	{
-		$tagName = trim($tagName);
+//		$tagName = trim($tagName);
 		
-		$normalizer = config('tagging.normalizer');
-		$normalizer = $normalizer ?: [static::$taggingUtility, 'slug'];
+//		$normalizer = config('tagging.normalizer');
+//		$normalizer = $normalizer ?: [static::$taggingUtility, 'slug'];
 
-		$tagSlug = call_user_func($normalizer, $tagName);
-		
+//		$tagSlug = call_user_func($normalizer, $tagName);
+        $tagSlug = $tagName;
 		$previousCount = $this->tagged()->where('tag_slug', '=', $tagSlug)->take(1)->count();
 		if($previousCount >= 1) {
             $tagged =  $this->tagged()->where('tag_slug', '=', $tagSlug)->first();
@@ -274,11 +276,12 @@ trait Taggable
             return;
 		}
 		
-		$displayer = config('tagging.displayer');
-		$displayer = empty($displayer) ? '\Illuminate\Support\Str::title' : $displayer;
+//		$displayer = config('tagging.displayer');
+//		$displayer = empty($displayer) ? '\Illuminate\Support\Str::title' : $displayer;
 		
 		$tagged = new Tagged(array(
-			'tag_name'=>call_user_func($displayer, $tagName),
+//			'tag_name'=>call_user_func($displayer, $tagName),
+            'tag_name'=>$tagName,
 			'tag_slug'=>$tagSlug,
 		));
 		
