@@ -133,19 +133,7 @@ trait Taggable
 	 */
 	public function untag($tagNames=null)
 	{
-		if(is_null($tagNames)) {
-			$tagNames = $this->tagNames();
-		}
-		
-		$tagNames = static::$taggingUtility->makeTagArray($tagNames);
-		
-		foreach($tagNames as $tagName) {
-			$this->removeTag($tagName);
-		}
-		
-		if(static::shouldDeleteUnused()) {
-			static::$taggingUtility->deleteUnusedTags();
-		}
+        $this->removeTag($tagNames);
 	}
 	
 	/**
@@ -300,12 +288,8 @@ trait Taggable
 	 */
 	private function removeTag($tagName)
 	{
-		$tagName = trim($tagName);
-		
-		$normalizer = config('tagging.normalizer');
-		$normalizer = $normalizer ?: [static::$taggingUtility, 'slug'];
-		
-		$tagSlug = call_user_func($normalizer, $tagName);
+        $tagSlug = $tagName;
+
 
         $tagged =  $this->tagged()->where('tag_slug', '=', $tagSlug)->first();
         if ($tagged != null){
