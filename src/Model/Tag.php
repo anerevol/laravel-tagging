@@ -32,23 +32,23 @@ class Tag extends Eloquent
      * (non-PHPdoc)
      * @see \Illuminate\Database\Eloquent\Model::save()
      */
-    public function save(array $options = array())
-    {
-        $validator = app('validator')->make(
-            array('name' => $this->name),
-            array('name' => 'required|min:1')
-        );
-
-        if ($validator->passes()) {
-            $normalizer = config('tagging.normalizer');
-            $normalizer = $normalizer ?: [$this->taggingUtility, 'slug'];
-
-            $this->slug = call_user_func($normalizer, $this->name);
-            return parent::save($options);
-        } else {
-            throw new \Exception('Tag Name is required');
-        }
-    }
+//    public function save(array $options = array())
+//    {
+//        $validator = app('validator')->make(
+//            array('name' => $this->name),
+//            array('name' => 'required|min:1')
+//        );
+//
+//        if ($validator->passes()) {
+//            $normalizer = config('tagging.normalizer');
+//            $normalizer = $normalizer ?: [$this->taggingUtility, 'slug'];
+//
+//            $this->slug = call_user_func($normalizer, $this->name);
+//            return parent::save($options);
+//        } else {
+//            throw new \Exception('Tag Name is required');
+//        }
+//    }
 
     /**
      * Tag group setter
@@ -128,13 +128,13 @@ class Tag extends Eloquent
      *
      * @param string $value
      */
-    public function setNameAttribute($value)
-    {
-        $displayer = config('tagging.displayer');
-        $displayer = empty($displayer) ? '\Illuminate\Support\Str::title' : $displayer;
-
-        $this->attributes['name'] = call_user_func($displayer, $value);
-    }
+//    public function setNameAttribute($value)
+//    {
+//        $displayer = config('tagging.displayer');
+//        $displayer = empty($displayer) ? '\Illuminate\Support\Str::title' : $displayer;
+//
+//        $this->attributes['name'] = call_user_func($displayer, $value);
+//    }
 
     /**
      * Look at the tags table and delete any tags that are no londer in use by any taggable database rows.

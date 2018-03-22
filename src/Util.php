@@ -48,6 +48,7 @@ class Util implements TaggingUtility
 	 */
 	public static function slug($str)
 	{
+	    return  $str;
 		// Make sure string is in UTF-8 and strip invalid UTF-8 characters
 		$str = mb_convert_encoding((string)$str, 'UTF-8');
 	
